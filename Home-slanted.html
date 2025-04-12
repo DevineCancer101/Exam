@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edwin Ranoco - UI Designer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  
+  <style>
+
+    html {
+
+    /* Slanted section styles */
+    .slant-section {
+      clip-path: polygon(0 0, 100% 10%, 100% 100%, 0% 100%);
+      position: relative;
+      z-index: 1;
+    }
+    .slant-section.reverse {
+      clip-path: polygon(0 10%, 100% 0, 100% 100%, 0% 100%);
+    }
+
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0 18rem;
+      font-family: 'Outfit', sans-serif;
+      background-color: #2b2b2b;
+      
+    }
+    header {
+      background: #2b2b2b;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      padding: 10px 20px;
+      font-size: 8px;
+      font-weight: bold;
+      
+    }
+    header a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+    }
+    header a:hover {
+      color: red;
+    }
+    .hero {
+      background: #fff url('Group 1.png') no-repeat center center;
+      background-size: cover;
+      padding: 145px 50px;
+      text-align: center;
+      color: #000;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: 3em;
+    }
+
+    
+    .hero h1 span {
+      color: red;
+    }
+    .hero p {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .welcome {
+      background:transparent;
+      padding: 60px 20px;
+      color: white;
+      text-align: left;
+    }
+    .welcome h2 {
+      font-size: 1.1em;
+      text-transform: uppercase;
+    }
+    .welcome p {
+      max-width: 600px;
+    }
+    .gallery-section {
+      background: #e0e0e0;
+      padding: 40px 20px;
+    }
+    .gallery-section h2 {
+      color: #000;
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      
+    }
+
+    .gallery-item img {
+    height: 200px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .gallery-item img:hover {
+    transform: scale(1.1);
+  }
+    .gallery {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+    }
+    .gallery-item {
+      margin-left: 1rem;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .about img {
+    height: 130px; /* Adjust the size as needed */
+    width: 130px; /* Set width to match the height */
+    border-radius: 50%; /* Make it a circle */
+    object-fit: cover; /* Ensure the image scales to fill the container */
+    margin-right: 10rem;
+} 
+    .gallery img {
+      height: 200px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .about {
+      background:transparent;
+      color: white;
+      padding: 60px 20px;
+    }
+    .about h2 {
+      font-size: 1.2em;
+    }
+    .about h2 span {
+      color: red;
+    }
+    .about-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .about-content p {
+      flex: 1;
+      max-width: 600px;
+    }
+    .social-icons {
+    margin-top: 20px;
+    }
+
+    .social-icons a {
+      color: white;
+      margin-right: 15px;
+      font-size: 24px;
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: red;
+    }
+    .plan.active {
+      display: block;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .plan {
+      display: none;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-button {
+      background: #800000;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background-color: #a52a2a;
+    }
+    .services-section {
+      background: #ccc;
+      padding: 40px 20px;
+      color: #000;
+    }
+    .services-section h2 {
+      margin-bottom: 20px;
+      font-size: 1.1em;
+    }
+    .pricing-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .pricing-tabs button {
+      background: #800000;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .pricing-box {
+      display: none;
+      align-items: center;
+      gap: 20px;
+    }
+    .pricing-box.active {
+      display: flex;
+    }
+    .pricing-box img {
+      height: 120px;
+      border-radius: 8px;
+    }
+    .pricing-box ul {
+      font-size: 12px;
+    }
+    .contact-section {
+      background:transparent;
+      padding: 60px 40px;
+      
+      
+      
+    }
+    .contact-section h2 {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      color: #fffdfd;
+    }
+    .contact-info {
+      font-size: 1.1rem;
+      line-height: 2;
+      color: #a0a0a0;
+    }
+    .contact-info a {
+      color: #b40202;
+      text-decoration: none;
+    }
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      background: #1a1a1a;
+      color: #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+    .footer-left {
+      flex: 1;
+    }
+    .footer-right {
+      flex: 1;
+      text-align: right;
+    }
+    .footer-right a {
+      color: #ccc;
+      margin-left: 10px;
+      text-decoration: none;
+    }
+    .footer-right a:hover {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#projects">PROJECTS</a>
+    <a href="#services">SERVICES</a>
+    <a href="#">HOME</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </header>
+
+  <section class="hero">
+    
+
+
+  </section>
+
+  <section class="welcome slant-section">
+    <h2>WELCOME</h2>
+    <p>I'm thrilled you're here! Whether you're looking for a fresh design or a seamless user experience, I'm here to help bring your vision to life. Let's create something amazing together!</p>
+  </section>
+
+  <section class="gallery-section slant-section reverse" id="projects">
+    <h2>PROJECT <span style="color: red">GALLERY</span></h2>
+    <div class="gallery">
+      <div class="gallery-item">
+        <a href="https://spacerush.io/" target="_blank">
+          <img src="asd.jpg" alt="Space Rush">
+        </a>
+      
+      </div>
+    </div>
+  </section>
+
+  <section class="about slant-section" id="about">
+    <h2>ABOUT <span>ME</span></h2>
+    <div class="about-content">
+      <p>I'm Edwin Ranoco, a UI Designer passionate about creating clean, user-friendly designs. I specialize in crafting seamless digital experiences that are both functional and visually engaging. My goal is to turn your ideas into intuitive, beautiful interfaces that users love.</p>
+      <img src="474580938_1273898180580775_7443739197002770006_n.jpg" alt="Edwin Avatar">
+    </div>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/edwin.ranoco.7737" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.youtube.com/@Drafts26" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </section>
+  
+
+  <section class="services-section slant-section reverse" id="services">
+    <h2>SERVICES</h2>
+    <div class="pricing-tabs">
+      <button onclick="showPricing('silver')">SILVER</button>
+      <button onclick="showPricing('gold')">GOLD</button>
+      <button onclick="showPricing('diamond')">DIAMOND</button>
+    </div>
+    <div id="silver" class="pricing-box active">
+    
+      <div>
+        <h3>Perfect for small projects or businesses just getting started.</h3>
+        <ul>
+          <li>1-Page Website or App Design</li>
+          <li>Basic UI Design (Up to 3 Screens)</li>
+          <li>Wireframing and Prototyping</li>
+          <li>1 Round of Revisions</li>
+          <li>Delivery in 7–10 Days</li>
+          <li>Price: $50</li>
+        </ul>
+      </div>
+    </div>
+    <div id="gold" class="pricing-box">
+      
+      <div>
+        <h3>Ideal for medium-sized businesses or startups.</h3>
+        <ul>
+          <li>Multi-Page Website Design</li>
+          <li>Advanced UI Elements & Interactions</li>
+          <li>User Flow Mapping</li>
+          <li>2 Rounds of Revisions</li>
+          <li>Delivery in 10–14 Days</li>
+          <li>Price: $120</li>
+        </ul>
+      </div>
+    </div>
+    <div id="diamond" class="pricing-box">
+      
+      <div>
+        <h3>For premium projects with full customization.</h3>
+        <ul>
+          <li>Full App or Website UI/UX Design</li>
+          <li>Interactive Prototypes</li>
+          <li>Design System Creation</li>
+          <li>Unlimited Revisions</li>
+          <li>Delivery in 14–21 Days</li>
+          <li>Price: $250</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <h2>Contact Me</h2>
+    <div class="contact-info">
+      <p><strong>Email:</strong> <a href="mailto:ranocoe1@gmail.com">ranocoe1@gmail.com</a></p>
+      <p><strong>Phone:</strong> 0926-239-8993</p>
+      <p><strong>Socials:</strong>
+        <a href="#">Instagram</a> |
+        <a href="#">Facebook</a> |
+        <a href="#">LinkedIn</a>
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-left">
+      <p>&copy; 2025 Edwin Ranoco. All rights reserved.</p>
+    </div>
+    <div class="footer-right">
+      <a href="#projects">Projects</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    function showPricing(id) {
+      document.querySelectorAll('.pricing-box').forEach(box => box.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+</body>
+</html>
