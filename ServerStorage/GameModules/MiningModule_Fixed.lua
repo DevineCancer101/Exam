@@ -193,17 +193,17 @@ function MiningModule.CreatePickaxe(player)
     point1.CFrame = head.CFrame * CFrame.new(1.2, 0, 0) * CFrame.Angles(0, 0, math.rad(90))
     point2.CFrame = head.CFrame * CFrame.new(-1.2, 0, 0) * CFrame.Angles(0, math.rad(180), math.rad(90))
     
-    -- Add mining sounds
+    -- Add mining sounds (using working sound IDs)
     local miningSound = Instance.new("Sound")
     miningSound.Name = "MiningSound"
-    miningSound.SoundId = "rbxasset://sounds/impact_wood.mp3"
+    miningSound.SoundId = "rbxassetid://131961136" -- Digging sound
     miningSound.Volume = 0.7
     miningSound.Pitch = 0.8
     miningSound.Parent = handle
     
     local hitSound = Instance.new("Sound")
     hitSound.Name = "HitSound" 
-    hitSound.SoundId = "rbxasset://sounds/metal_hit.mp3"
+    hitSound.SoundId = "rbxassetid://131961975" -- Hit sound
     hitSound.Volume = 0.5
     hitSound.Pitch = 1.2
     hitSound.Parent = handle
@@ -290,11 +290,12 @@ function MiningModule.PlayPickaxeAnimation(player)
     local handle = tool:FindFirstChild("Handle")
     if not handle then return end
     
-    -- Create swinging animation for pickaxe
+    -- Create simple rotation animation for pickaxe using the handle
+    local originalCFrame = handle.CFrame
     local swingTween = TweenService:Create(
-        tool.Grip,
-        TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
-        {C0 = tool.Grip.C0 * CFrame.Angles(math.rad(-45), 0, 0)}
+        handle,
+        TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+        {CFrame = originalCFrame * CFrame.Angles(math.rad(-30), 0, 0)}
     )
     
     swingTween:Play()
@@ -306,12 +307,12 @@ function MiningModule.PlayPickaxeAnimation(player)
             if miningSound then
                 miningSound:Play()
             end
-            wait(0.5)
+            wait(0.6)
             local hitSound = handle:FindFirstChild("HitSound")
             if hitSound then
                 hitSound:Play() 
             end
-            wait(0.5)
+            wait(0.6)
         end
     end)
     
