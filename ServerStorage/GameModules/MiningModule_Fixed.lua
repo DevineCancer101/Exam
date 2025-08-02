@@ -410,8 +410,7 @@ function MiningModule.StartMining(player, node, resourceType)
         miningTime = miningTime * 0.75 -- 25% faster for Emerald Miners
     end
     
-    -- Start animations
-    local miningAnim = MiningModule.PlayMiningAnimation(player)
+    -- Start pickaxe animation only (no player animation)
     local pickaxeAnim = MiningModule.PlayPickaxeAnimation(player)
     
     -- Start mining session
@@ -421,7 +420,7 @@ function MiningModule.StartMining(player, node, resourceType)
         StartTime = tick(),
         MiningTime = miningTime,
         Position = player.Character.HumanoidRootPart.Position,
-        MiningAnimation = miningAnim,
+        MiningAnimation = nil, -- No player animation
         PickaxeAnimation = pickaxeAnim
     }
     
@@ -441,8 +440,7 @@ end
 function MiningModule.StopMining(player)
     local session = MiningSessions[player.UserId]
     if session then
-        -- Stop animations
-        MiningModule.StopMiningAnimation(player, session.MiningAnimation)
+        -- Stop pickaxe animation only (no player animation to stop)
         MiningModule.StopPickaxeAnimation(session.PickaxeAnimation)
         
         -- Unequip pickaxe after mining
