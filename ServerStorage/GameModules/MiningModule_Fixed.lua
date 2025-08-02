@@ -262,21 +262,35 @@ function MiningModule.PlayMiningAnimation(player)
         animator.Parent = humanoid
     end
     
-    -- Load default mining animation
-    local animationId = "rbxassetid://507770677" -- Default digging animation
+    -- Use a more stable mining animation
+    local animationId = "rbxassetid://3695333486" -- Better mining animation
     local animation = Instance.new("Animation")
     animation.AnimationId = animationId
     
     local animTrack = animator:LoadAnimation(animation)
     animTrack.Looped = true
-    animTrack:Play()
+    animTrack.Priority = Enum.AnimationPriority.Action
+    animTrack:Play(0.1, 1, 1) -- Smooth transition
     
     return animTrack
 end
 
 function MiningModule.StopMiningAnimation(player, animTrack)
     if animTrack then
-        animTrack:Stop()
+        animTrack:Stop(0.2) -- Smooth fade out
+        animTrack:Destroy()
+    end
+    
+    -- Ensure player returns to idle state
+    local character = player.Character
+    if character then
+        local humanoid = character:FindFirstChild("Humanoid")
+        if humanoid then
+            -- Force return to idle
+            humanoid:ChangeState(Enum.HumanoidStateType.Running)
+            wait(0.1)
+            humanoid:ChangeState(Enum.HumanoidStateType.Running)
+        end
     end
 end
 
@@ -366,9 +380,26 @@ function MiningModule.StartMining(player, node, resourceType)
         return
     end
     
-    -- FIXED: Always give and auto-equip pickaxe before mining
-    MiningModule.CreatePickaxe(player)
-    wait(0.2) -- Give time for tool to equip
+    -- FIXED: Smart pickaxe management - only create if player doesn't have one
+    local hasPickaxe = false
+    if player.Character then
+        hasPickaxe = player.Character:FindFirstChild("Mining Pickaxe") ~= nil
+    end
+    if not hasPickaxe and player.Backpack then
+        hasPickaxe = player.Backpack:FindFirstChild("Mining Pickaxe") ~= nil
+    end
+    
+    if not hasPickaxe then
+        MiningModule.CreatePickaxe(player)
+        wait(0.3) -- Give time for tool to equip
+    else
+        -- If player has pickaxe but not equipped, equip it
+        local tool = player.Backpack:FindFirstChild("Mining Pickaxe")
+        if tool and player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid:EquipTool(tool)
+            wait(0.2)
+        end
+    end
     
     -- Apply guild mining speed bonus
     local guildModule = require(script.Parent.GuildModule)
@@ -413,6 +444,18 @@ function MiningModule.StopMining(player)
         -- Stop animations
         MiningModule.StopMiningAnimation(player, session.MiningAnimation)
         MiningModule.StopPickaxeAnimation(session.PickaxeAnimation)
+        
+        -- Unequip pickaxe after mining
+        spawn(function()
+            wait(0.5) -- Small delay to let animations finish
+            if player.Character then
+                local tool = player.Character:FindFirstChild("Mining Pickaxe")
+                if tool then
+                    tool.Parent = player.Backpack -- Move to backpack (unequip)
+                    print("Unequipped pickaxe for player: " .. player.Name)
+                end
+            end
+        end)
         
         MiningSessions[player.UserId] = nil
         
@@ -609,9 +652,10 @@ function MiningModule.CompleteMining(player, session)
             Value = config.Value
         })
         
-        print("Player " .. player.Name .. " mined 1 " .. session.ResourceType)
+        print("Player " .. player.Name .. " mined 1 " .. session.ResourceType .. " - Mining session completed!")
     end
     
+    -- Stop mining and auto-unequip pickaxe
     MiningModule.StopMining(player)
 end
 
