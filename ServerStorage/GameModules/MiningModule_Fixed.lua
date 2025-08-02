@@ -193,19 +193,19 @@ function MiningModule.CreatePickaxe(player)
     point1.CFrame = head.CFrame * CFrame.new(1.2, 0, 0) * CFrame.Angles(0, 0, math.rad(90))
     point2.CFrame = head.CFrame * CFrame.new(-1.2, 0, 0) * CFrame.Angles(0, math.rad(180), math.rad(90))
     
-    -- Add mining sounds (using working sound IDs)
+    -- Add mining sounds (using proper audio IDs)
     local miningSound = Instance.new("Sound")
     miningSound.Name = "MiningSound"
-    miningSound.SoundId = "rbxassetid://131961136" -- Digging sound
-    miningSound.Volume = 0.7
-    miningSound.Pitch = 0.8
+    miningSound.SoundId = "rbxassetid://9119713951" -- Mining/digging sound
+    miningSound.Volume = 0.3
+    miningSound.Pitch = 1.0
     miningSound.Parent = handle
     
     local hitSound = Instance.new("Sound")
     hitSound.Name = "HitSound" 
-    hitSound.SoundId = "rbxassetid://131961975" -- Hit sound
-    hitSound.Volume = 0.5
-    hitSound.Pitch = 1.2
+    hitSound.SoundId = "rbxassetid://9119561046" -- Rock hit sound
+    hitSound.Volume = 0.2
+    hitSound.Pitch = 1.5
     hitSound.Parent = handle
     
     -- Add sparkle effect
@@ -290,38 +290,54 @@ function MiningModule.PlayPickaxeAnimation(player)
     local handle = tool:FindFirstChild("Handle")
     if not handle then return end
     
-    -- Create simple rotation animation for pickaxe using the handle
-    local originalCFrame = handle.CFrame
-    local swingTween = TweenService:Create(
-        handle,
-        TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
-        {CFrame = originalCFrame * CFrame.Angles(math.rad(-30), 0, 0)}
-    )
+    -- Store original position for restoration
+    if not handle:GetAttribute("OriginalCFrame") then
+        handle:SetAttribute("OriginalCFrame", tostring(handle.CFrame))
+    end
     
-    swingTween:Play()
+    -- Create simple swing effect without breaking tool functionality
+    local swingCount = 0
+    local maxSwings = 5
     
-    -- Play mining sounds alternately
+    local swingAnimation = {}
+    swingAnimation.active = true
+    
     spawn(function()
-        while swingTween.PlaybackState == Enum.PlaybackState.Playing do
-            local miningSound = handle:FindFirstChild("MiningSound")
-            if miningSound then
-                miningSound:Play()
+        while swingAnimation.active and swingCount < maxSwings do
+            if handle and handle.Parent then
+                -- Quick swing motion
+                local currentCFrame = handle.CFrame
+                handle.CFrame = currentCFrame * CFrame.Angles(math.rad(-15), 0, 0)
+                wait(0.1)
+                if handle and handle.Parent then
+                    handle.CFrame = currentCFrame * CFrame.Angles(math.rad(15), 0, 0)
+                end
+                wait(0.1)
+                if handle and handle.Parent then
+                    handle.CFrame = currentCFrame -- Return to normal
+                end
+                
+                -- Play sound effect
+                local miningSound = handle:FindFirstChild("MiningSound")
+                if miningSound then
+                    miningSound:Play()
+                end
+                
+                swingCount = swingCount + 1
+                wait(0.3)
+            else
+                break
             end
-            wait(0.6)
-            local hitSound = handle:FindFirstChild("HitSound")
-            if hitSound then
-                hitSound:Play() 
-            end
-            wait(0.6)
         end
+        swingAnimation.active = false
     end)
     
-    return swingTween
+    return swingAnimation
 end
 
-function MiningModule.StopPickaxeAnimation(swingTween)
-    if swingTween then
-        swingTween:Cancel()
+function MiningModule.StopPickaxeAnimation(swingAnimation)
+    if swingAnimation then
+        swingAnimation.active = false
     end
 end
 
